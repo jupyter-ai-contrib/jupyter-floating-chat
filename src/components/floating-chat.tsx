@@ -1,6 +1,5 @@
 import React from 'react';
 import { ChatInput } from '@jupyter/chat';
-// import { Widget } from '@lumino/widgets';
 
 interface IFloatingChatProps extends ChatInput.IProps {
   onClose: () => void;
@@ -12,6 +11,11 @@ export const FloatingChat: React.FC<IFloatingChatProps> = ({
   onClose,
   onCancel
 }) => {
+  const inputRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    inputRef.current?.getElementsByTagName('textarea').item(0)?.focus();
+  }, []);
+
   return (
     <div className="floating-chat-container">
       <div className="floating-chat-header">
@@ -26,7 +30,7 @@ export const FloatingChat: React.FC<IFloatingChatProps> = ({
           ×
         </button>
       </div>
-      <div className="floating-chat-body">
+      <div ref={inputRef} className="floating-chat-body">
         <ChatInput
           model={model}
           toolbarRegistry={toolbarRegistry}
