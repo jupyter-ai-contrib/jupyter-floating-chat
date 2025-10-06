@@ -3,6 +3,7 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 import { ICommandPalette } from '@jupyterlab/apputils';
+import { INotebookTracker } from '@jupyterlab/notebook';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 
 import { FloatingChatWidget } from './widget';
@@ -15,12 +16,13 @@ const plugin: JupyterFrontEndPlugin<IFloatingChatOptions> = {
   id: 'floating-chat:plugin',
   description: 'A JupyterLab extension to add a floating chat.',
   autoStart: true,
-  optional: [ISettingRegistry, ICommandPalette],
+  optional: [ISettingRegistry, ICommandPalette, INotebookTracker],
   provides: IFloatingChatOptions,
   activate: (
     app: JupyterFrontEnd,
     settingRegistry: ISettingRegistry | null,
-    palette: ICommandPalette | null
+    palette: ICommandPalette | null,
+    notebookTracker: INotebookTracker
   ): IFloatingChatOptions => {
     console.log('JupyterLab extension floating-chat is activated!');
 
@@ -28,16 +30,20 @@ const plugin: JupyterFrontEndPlugin<IFloatingChatOptions> = {
 
     let floatingWidget: FloatingChatWidget | null = null;
     let lastContextMenuPosition = { x: 0, y: 0 };
+    let lastContextMenuTarget: HTMLElement | null = null;
 
     // Get the right click position.
     document.addEventListener('contextmenu', event => {
       lastContextMenuPosition = { x: event.clientX, y: event.clientY };
+      lastContextMenuTarget = event.target as HTMLElement;
     });
 
     // Command to toggle floating chat
     const command = 'floating-chat:toggle';
     app.commands.addCommand(command, {
-      label: 'Floating Chat',
+      label: args => {
+        return `Floating Chat (${args.targetType})`;
+      },
       execute: args => {
         if (floatingWidget && !floatingWidget.isDisposed) {
           floatingWidget.dispose();
@@ -49,7 +55,10 @@ const plugin: JupyterFrontEndPlugin<IFloatingChatOptions> = {
           floatingWidget = new FloatingChatWidget({
             ...options,
             chatModel: options.chatModel,
-            position: lastContextMenuPosition
+            notebookTracker,
+            position: lastContextMenuPosition,
+            target: lastContextMenuTarget,
+            targetType: args.targetType as string
           });
           floatingWidget.attach();
         }
@@ -65,9 +74,18 @@ const plugin: JupyterFrontEndPlugin<IFloatingChatOptions> = {
     app.contextMenu.addItem({
       command,
       selector: '.jp-Notebook',
-      rank: 1000,
+      rank: 0,
       args: {
-        isNotebook: true
+        targetType: 'Notebook'
+      }
+    });
+
+    app.contextMenu.addItem({
+      command,
+      selector: '.jp-Cell',
+      rank: 0,
+      args: {
+        targetType: 'Cell'
       }
     });
 

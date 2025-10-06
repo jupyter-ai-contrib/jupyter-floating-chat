@@ -2341,7 +2341,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jupyterlab/cells@npm:^4.4.9":
+"@jupyterlab/cells@npm:^4.0.0, @jupyterlab/cells@npm:^4.4.9":
   version: 4.4.9
   resolution: "@jupyterlab/cells@npm:4.4.9"
   dependencies:
@@ -2614,7 +2614,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jupyterlab/notebook@npm:^4.2.0, @jupyterlab/notebook@npm:^4.4.9":
+"@jupyterlab/notebook@npm:^4.0.0, @jupyterlab/notebook@npm:^4.2.0, @jupyterlab/notebook@npm:^4.4.9":
   version: 4.4.9
   resolution: "@jupyterlab/notebook@npm:4.4.9"
   dependencies:
@@ -5872,6 +5872,8 @@ __metadata:
     "@jupyterlab/application": ^4.0.0
     "@jupyterlab/apputils": ^4.0.0
     "@jupyterlab/builder": ^4.0.0
+    "@jupyterlab/cells": ^4.0.0
+    "@jupyterlab/notebook": ^4.0.0
     "@jupyterlab/settingregistry": ^4.0.0
     "@jupyterlab/testutils": ^4.0.0
     "@lumino/coreutils": ^2.2.1

@@ -1,9 +1,12 @@
 import {
   IChatModel,
   IInputToolbarRegistry,
+  INotebookAttachment,
   InputToolbarRegistry
 } from '@jupyter/chat';
 import { ReactWidget } from '@jupyterlab/apputils';
+import { Cell } from '@jupyterlab/cells';
+import { INotebookTracker } from '@jupyterlab/notebook';
 import { Message } from '@lumino/messaging';
 import { Widget } from '@lumino/widgets';
 import React from 'react';
@@ -14,8 +17,10 @@ import { IFloatingChatOptions } from './tokens';
 export namespace FloatingChatWidget {
   export interface IOptions extends IFloatingChatOptions {
     chatModel: IChatModel;
+    notebookTracker: INotebookTracker;
     position?: { x: number; y: number };
-    widget?: Widget;
+    target: HTMLElement | null;
+    targetType?: string;
   }
 }
 
@@ -34,6 +39,40 @@ export class FloatingChatWidget extends ReactWidget {
       this._originalSend.call(this, content);
       this.dispose();
     };
+
+    if (options.targetType && options.target) {
+      const notebookPanel = options.notebookTracker.currentWidget;
+      if (!notebookPanel) {
+        return;
+      }
+      const attachment: INotebookAttachment = {
+        type: 'notebook',
+        value: notebookPanel.context.path
+      };
+
+      let cell: Cell;
+      if (options.targetType === 'Cell') {
+        const cellElement = options.target.closest('.jp-Cell') as HTMLElement;
+        if (
+          cellElement &&
+          cellElement.dataset.windowedListIndex !== undefined
+        ) {
+          cell =
+            notebookPanel.content.widgets[
+              +cellElement.dataset.windowedListIndex
+            ];
+
+          const cellType = cell.model.type as 'code' | 'markdown' | 'raw';
+          attachment.cells = [
+            {
+              input_type: cellType,
+              id: cell.id
+            }
+          ];
+        }
+      }
+      this._chatModel.input.addAttachment?.(attachment);
+    }
 
     this.addClass('floating-chat-widget');
     this.id = 'floating-chat-widget';
@@ -80,7 +119,6 @@ export class FloatingChatWidget extends ReactWidget {
       this.node.style.right = '20px';
       this.node.style.bottom = '20px';
     }
-
     document.addEventListener('click', this._onDocumentClick.bind(this));
   }
 
@@ -99,6 +137,7 @@ export class FloatingChatWidget extends ReactWidget {
 
     // Clean the chat input.
     this._chatModel.input.value = '';
+    this._chatModel.input.clearAttachments();
 
     // Restore the original send function.
     this._chatModel.input.send = this._originalSend;
