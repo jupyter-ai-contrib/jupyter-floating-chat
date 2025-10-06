@@ -1,0 +1,72 @@
+/*
+    See the JupyterLab Developer Guide for useful CSS Patterns:
+
+    https://jupyterlab.readthedocs.io/en/stable/developer/css.html
+*/
+
+.floating-chat-widget {
+  position: fixed !important;
+  width: 300px;
+  min-height: 150px;
+  background: var(--jp-layout-color0);
+  border: 1px solid var(--jp-border-color1);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: var(--jp-ui-font-family);
+  z-index: 1000;
+}
+
+.floating-chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.floating-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--jp-toolbar-background);
+  border-bottom: 1px solid var(--jp-border-color1);
+  border-radius: 8px 8px 0 0;
+}
+
+.floating-chat-drag-handle {
+  cursor: move;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--jp-ui-font-color1);
+  flex-grow: 1;
+}
+
+.floating-chat-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--jp-ui-font-color2);
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-chat-close:hover {
+  color: var(--jp-ui-font-color0);
+  background: var(--jp-layout-color2);
+  border-radius: 3px;
+}
+
+.floating-chat-body {
+  flex-grow: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-chat-body .jp-chat-input {
+  flex-grow: 1;
+}
