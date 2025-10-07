@@ -11,11 +11,11 @@ import { Message } from '@lumino/messaging';
 import { Widget } from '@lumino/widgets';
 import React from 'react';
 
-import { FloatingChat } from './components/floating-chat';
-import { IFloatingChatOptions } from './tokens';
+import { FloatingInput } from './components/floating-input';
+import { IFloatingInputOptions } from './tokens';
 
-export namespace FloatingChatWidget {
-  export interface IOptions extends IFloatingChatOptions {
+export namespace FloatingInputWidget {
+  export interface IOptions extends IFloatingInputOptions {
     chatModel: IChatModel;
     notebookTracker: INotebookTracker;
     position?: { x: number; y: number };
@@ -24,8 +24,8 @@ export namespace FloatingChatWidget {
   }
 }
 
-export class FloatingChatWidget extends ReactWidget {
-  constructor(options: FloatingChatWidget.IOptions) {
+export class FloatingInputWidget extends ReactWidget {
+  constructor(options: FloatingInputWidget.IOptions) {
     super();
     this._chatModel = options.chatModel;
     this._toolbarRegistry =
@@ -74,13 +74,13 @@ export class FloatingChatWidget extends ReactWidget {
       this._chatModel.input.addAttachment?.(attachment);
     }
 
-    this.addClass('floating-chat-widget');
-    this.id = 'floating-chat-widget';
+    this.addClass('floating-input-widget');
+    this.id = 'floating-input-widget';
   }
 
   protected render(): JSX.Element {
     return (
-      <FloatingChat
+      <FloatingInput
         model={this._chatModel.input}
         toolbarRegistry={this._toolbarRegistry}
         onClose={() => this.dispose()}
