@@ -5,23 +5,50 @@ import React from 'react';
 
 interface IFloatingInputProps extends ChatInput.IProps {
   onClose: () => void;
+  updatePosition: () => void;
 }
 
 export const FloatingInput: React.FC<IFloatingInputProps> = ({
   model,
   toolbarRegistry,
   onClose,
-  onCancel
+  onCancel,
+  updatePosition
 }) => {
   const inputRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
-  // Focus on the input when rendered.
   React.useEffect(() => {
+    // Focus on the input when rendered.
     inputRef.current?.getElementsByTagName('textarea').item(0)?.focus();
+
+    // Setup ResizeObserver to detect change in size.
+    let resizeObserver: ResizeObserver | null = null;
+
+    if (containerRef.current) {
+      resizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          console.log('Resize detected:', entry.contentRect);
+          updatePosition();
+        }
+      });
+
+      resizeObserver.observe(containerRef.current);
+    }
+
+    // Update the position after the first render.
+    updatePosition();
+
+    // Cleanup
+    return () => {
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
   }, []);
 
   return (
-    <div className="floating-input-container">
+    <div ref={containerRef} className="floating-input-container">
       <div className="floating-input-header">
         <div className="floating-input-title">💬 Chat</div>
         <Button className="floating-input-close" onClick={onClose}>

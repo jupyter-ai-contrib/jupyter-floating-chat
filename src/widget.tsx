@@ -84,6 +84,7 @@ export class FloatingInputWidget extends ReactWidget {
         model={this._chatModel.input}
         toolbarRegistry={this._toolbarRegistry}
         onClose={() => this.dispose()}
+        updatePosition={this.updatePosition}
       />
     );
   }
@@ -96,12 +97,7 @@ export class FloatingInputWidget extends ReactWidget {
     Widget.detach(this);
   }
 
-  protected onAfterAttach(msg: Message): void {
-    super.onAfterAttach(msg);
-
-    this.node.style.position = 'fixed';
-    this.node.style.zIndex = '1000';
-
+  updatePosition = () => {
     if (this._position) {
       let { x, y } = this._position;
 
@@ -119,6 +115,15 @@ export class FloatingInputWidget extends ReactWidget {
       this.node.style.right = '20px';
       this.node.style.bottom = '20px';
     }
+  }
+
+  protected onAfterAttach(msg: Message): void {
+    super.onAfterAttach(msg);
+
+    this.node.style.position = 'fixed';
+    this.node.style.zIndex = '1000';
+
+    this.updatePosition();
     document.addEventListener('click', this._onDocumentClick.bind(this));
   }
 
