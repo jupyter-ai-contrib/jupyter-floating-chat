@@ -1,5 +1,5 @@
 {
-    "name": "floating-chat",
+    "name": "jupyter-floating-chat",
     "version": "0.1.0",
     "description": "A JupyterLab extension to add a floating chat.",
     "keywords": [
@@ -7,9 +7,9 @@
         "jupyterlab",
         "jupyterlab-extension"
     ],
-    "homepage": "https://github.com/jupyter-ai-contrib/floating-chat",
+    "homepage": "https://github.com/jupyter-ai-contrib/jupyter-floating-chat",
     "bugs": {
-        "url": "https://github.com/jupyter-ai-contrib/floating-chat/issues"
+        "url": "https://github.com/jupyter-ai-contrib/jupyter-floating-chat/issues"
     },
     "license": "BSD-3-Clause",
     "author": {
@@ -27,7 +27,7 @@
     "style": "style/index.css",
     "repository": {
         "type": "git",
-        "url": "https://github.com/jupyter-ai-contrib/floating-chat.git"
+        "url": "https://github.com/jupyter-ai-contrib/jupyter-floating-chat.git"
     },
     "scripts": {
         "build": "jlpm build:lib && jlpm build:labextension:dev",

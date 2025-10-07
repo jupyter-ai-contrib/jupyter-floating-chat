@@ -1,6 +1,6 @@
 # jupyter_floating_chat
 
-[![Github Actions Status](https://github.com/jupyter-ai-contrib/floating-chat/workflows/Build/badge.svg)](https://github.com/jupyter-ai-contrib/floating-chat/actions/workflows/build.yml)
+[![Github Actions Status](https://github.com/jupyter-jupyter-floating-chatoating-chat/workflows/Build/badge.svg)](https://github.com/jupyter-ai-contrib/jupyter-floating-chat/actions/workflows/build.yml)
 
 A JupyterLab extension to add a floating chat.
 
@@ -70,7 +70,7 @@ pip uninstall jupyter_floating_chat
 
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`
 command. To find its location, you can run `jupyter labextension list` to figure out where the `labextensions`
-folder is located. Then you can remove the symlink named `floating-chat` within that folder.
+folder is located. Then you can remove the symlink named `jupyter-floating-chat` within that folder.
 
 ### Testing the extension
 

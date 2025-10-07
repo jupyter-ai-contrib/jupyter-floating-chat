@@ -9,10 +9,10 @@ import { FloatingInputWidget } from './widget';
 import { CommandIds, IFloatingInputOptions } from './tokens';
 
 /**
- * Initialization data for the floating-chat extension.
+ * Initialization data for the jupyter-floating-chat extension.
  */
 const plugin: JupyterFrontEndPlugin<IFloatingInputOptions> = {
-  id: 'floating-chat:plugin',
+  id: 'jupyter-floating-chat:plugin',
   description: 'A JupyterLab extension to add a floating chat.',
   autoStart: true,
   optional: [ISettingRegistry, INotebookTracker],
@@ -22,7 +22,7 @@ const plugin: JupyterFrontEndPlugin<IFloatingInputOptions> = {
     settingRegistry: ISettingRegistry | null,
     notebookTracker: INotebookTracker
   ): IFloatingInputOptions => {
-    console.log('JupyterLab extension floating-chat is activated!');
+    console.log('JupyterLab extension jupyter-floating-chat is activated!');
 
     const options: IFloatingInputOptions = {};
 
@@ -86,10 +86,10 @@ const plugin: JupyterFrontEndPlugin<IFloatingInputOptions> = {
       settingRegistry
         .load(plugin.id)
         .then(settings => {
-          console.log('floating-chat settings loaded:', settings.composite);
+          console.log('jupyter-floating-chat settings loaded:', settings.composite);
         })
         .catch(reason => {
-          console.error('Failed to load settings for floating-chat.', reason);
+          console.error('Failed to load settings for jupyter-floating-chat.', reason);
         });
     }
 

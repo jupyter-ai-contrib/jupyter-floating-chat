@@ -37,8 +37,8 @@ artifacts = ["jupyter_floating_chat/labextension"]
 exclude = [".github", "binder"]
 
 [tool.hatch.build.targets.wheel.shared-data]
-"jupyter_floating_chat/labextension" = "share/jupyter/labextensions/floating-chat"
-"install.json" = "share/jupyter/labextensions/floating-chat/install.json"
+"jupyter_floating_chat/labextension" = "share/jupyter/labextensions/jupyter-floating-chat"
+"install.json" = "share/jupyter/labextensions/jupyter-floating-chat/install.json"
 
 [tool.hatch.build.hooks.version]
 path = "jupyter_floating_chat/_version.py"
