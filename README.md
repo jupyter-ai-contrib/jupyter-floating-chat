@@ -1,6 +1,6 @@
 # jupyter_floating_chat
 
-[![Github Actions Status](https://github.com/jupyter-jupyter-floating-chatoating-chat/workflows/Build/badge.svg)](https://github.com/jupyter-ai-contrib/jupyter-floating-chat/actions/workflows/build.yml)
+[![Github Actions Status](https://github.com/jupyter-ai-contrib/jupyter-floating-chat/workflows/Build/badge.svg)](https://github.com/jupyter-ai-contrib/jupyter-floating-chat/actions/workflows/build.yml)
 
 A JupyterLab extension to add a floating chat.
 

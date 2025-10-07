@@ -86,10 +86,16 @@ const plugin: JupyterFrontEndPlugin<IFloatingInputOptions> = {
       settingRegistry
         .load(plugin.id)
         .then(settings => {
-          console.log('jupyter-floating-chat settings loaded:', settings.composite);
+          console.log(
+            'jupyter-floating-chat settings loaded:',
+            settings.composite
+          );
         })
         .catch(reason => {
-          console.error('Failed to load settings for jupyter-floating-chat.', reason);
+          console.error(
+            'Failed to load settings for jupyter-floating-chat.',
+            reason
+          );
         });
     }
 
