@@ -12,5 +12,5 @@ except ImportError:
 def _jupyter_labextension_paths():
     return [{
         "src": "labextension",
-        "dest": "floating-chat"
+        "dest": "jupyter-floating-chat"
     }]
