@@ -9,6 +9,6 @@ kind: frontend
 labextension_name: floating-chat
 project_short_description: A JupyterLab extension to add a floating chat.
 python_name: floating_chat
-repository: https://github.com/brichet/floating-chat
+repository: https://github.com/jupyter-ai-contrib/floating-chat
 test: true
 
