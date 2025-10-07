@@ -1,7 +1,7 @@
 {
   "jupyter.lab.shortcuts": [],
-  "title": "floating-chat",
-  "description": "floating-chat settings.",
+  "title": "jupyter-floating-chat",
+  "description": "jupyter-floating-chat settings.",
   "type": "object",
   "properties": {},
   "additionalProperties": false

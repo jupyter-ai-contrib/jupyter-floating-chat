@@ -1,5 +1,5 @@
 {
-    "name": "floating-chat",
+    "name": "jupyter-floating-chat",
     "version": "0.1.0",
     "description": "A JupyterLab extension to add a floating chat.",
     "keywords": [
@@ -7,9 +7,9 @@
         "jupyterlab",
         "jupyterlab-extension"
     ],
-    "homepage": "https://github.com/jupyter-ai-contrib/floating-chat",
+    "homepage": "https://github.com/jupyter-ai-contrib/jupyter-floating-chat",
     "bugs": {
-        "url": "https://github.com/jupyter-ai-contrib/floating-chat/issues"
+        "url": "https://github.com/jupyter-ai-contrib/jupyter-floating-chat/issues"
     },
     "license": "BSD-3-Clause",
     "author": {
@@ -27,7 +27,7 @@
     "style": "style/index.css",
     "repository": {
         "type": "git",
-        "url": "https://github.com/jupyter-ai-contrib/floating-chat.git"
+        "url": "https://github.com/jupyter-ai-contrib/jupyter-floating-chat.git"
     },
     "scripts": {
         "build": "jlpm build:lib && jlpm build:labextension:dev",
@@ -39,7 +39,7 @@
         "clean": "jlpm clean:lib",
         "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
         "clean:lintcache": "rimraf .eslintcache .stylelintcache",
-        "clean:labextension": "rimraf floating_chat/labextension floating_chat/_version.py",
+        "clean:labextension": "rimraf jupyter_floating_chat/labextension jupyter_floating_chat/_version.py",
         "clean:all": "jlpm clean:lib && jlpm clean:labextension && jlpm clean:lintcache",
         "eslint": "jlpm eslint:check --fix",
         "eslint:check": "eslint . --cache --ext .ts,.tsx",
@@ -106,7 +106,7 @@
     },
     "jupyterlab": {
         "extension": true,
-        "outputDir": "floating_chat/labextension",
+        "outputDir": "jupyter_floating_chat/labextension",
         "schemaDir": "schema"
     },
     "eslintIgnore": [

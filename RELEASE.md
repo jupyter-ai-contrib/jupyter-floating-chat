@@ -1,4 +1,4 @@
-# Making a new release of floating_chat
+# Making a new release of jupyter_floating_chat
 
 The extension can be published to `PyPI` and `npm` manually or using the [Jupyter Releaser](https://github.com/jupyter-server/jupyter_releaser).
 

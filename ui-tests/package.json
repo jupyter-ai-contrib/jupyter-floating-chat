@@ -1,7 +1,7 @@
 {
-  "name": "floating-chat-ui-tests",
+  "name": "jupyter-floating-chat-ui-tests",
   "version": "1.0.0",
-  "description": "JupyterLab floating-chat Integration Tests",
+  "description": "JupyterLab jupyter-floating-chat Integration Tests",
   "private": true,
   "scripts": {
     "start": "jupyter lab --config jupyter_server_test_config.py",

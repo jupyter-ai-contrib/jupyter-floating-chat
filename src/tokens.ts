@@ -5,7 +5,7 @@ export namespace CommandIds {
   /**
    * The command to open a floating input.
    */
-  export const openInput = 'floating-chat:open-input';
+  export const openInput = 'jupyter-floating-chat:open-input';
 }
 
 /**
@@ -20,6 +20,6 @@ export interface IFloatingInputOptions {
  * The token providing the floating chat options.
  */
 export const IFloatingInputOptions = new Token<IFloatingInputOptions>(
-  'floating-chat:options',
+  'jupyter-floating-chat:options',
   'The default options for the floating chat.'
 );
