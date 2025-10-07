@@ -3,4 +3,4 @@ node_modules
 **/lib
 **/package.json
 !/package.json
-floating_chat
+jupyter_floating_chat

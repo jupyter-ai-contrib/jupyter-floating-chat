@@ -1,4 +1,4 @@
-# floating_chat
+# jupyter_floating_chat
 
 [![Github Actions Status](https://github.com/jupyter-ai-contrib/floating-chat/workflows/Build/badge.svg)](https://github.com/jupyter-ai-contrib/floating-chat/actions/workflows/build.yml)
 
@@ -13,7 +13,7 @@ A JupyterLab extension to add a floating chat.
 To install the extension, execute:
 
 ```bash
-pip install floating_chat
+pip install jupyter_floating_chat
 ```
 
 ## Uninstall
@@ -21,7 +21,7 @@ pip install floating_chat
 To remove the extension, execute:
 
 ```bash
-pip uninstall floating_chat
+pip uninstall jupyter_floating_chat
 ```
 
 ## Contributing
@@ -36,7 +36,7 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the floating_chat directory
+# Change directory to the jupyter_floating_chat directory
 # Install package in development mode
 pip install -e "."
 # Link your development version of the extension with JupyterLab
@@ -65,7 +65,7 @@ jupyter lab build --minimize=False
 ### Development uninstall
 
 ```bash
-pip uninstall floating_chat
+pip uninstall jupyter_floating_chat
 ```
 
 In development mode, you will also need to remove the symlink created by `jupyter labextension develop`

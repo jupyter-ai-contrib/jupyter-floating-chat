@@ -3,7 +3,7 @@ requires = ["hatchling>=1.5.0", "jupyterlab>=4.0.0,<5", "hatch-nodejs-version>=0
 build-backend = "hatchling.build"
 
 [project]
-name = "floating_chat"
+name = "jupyter_floating_chat"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.9"
@@ -33,24 +33,24 @@ source = "nodejs"
 fields = ["description", "authors", "urls", "keywords"]
 
 [tool.hatch.build.targets.sdist]
-artifacts = ["floating_chat/labextension"]
+artifacts = ["jupyter_floating_chat/labextension"]
 exclude = [".github", "binder"]
 
 [tool.hatch.build.targets.wheel.shared-data]
-"floating_chat/labextension" = "share/jupyter/labextensions/floating-chat"
+"jupyter_floating_chat/labextension" = "share/jupyter/labextensions/floating-chat"
 "install.json" = "share/jupyter/labextensions/floating-chat/install.json"
 
 [tool.hatch.build.hooks.version]
-path = "floating_chat/_version.py"
+path = "jupyter_floating_chat/_version.py"
 
 [tool.hatch.build.hooks.jupyter-builder]
 dependencies = ["hatch-jupyter-builder>=0.5"]
 build-function = "hatch_jupyter_builder.npm_builder"
 ensured-targets = [
-    "floating_chat/labextension/static/style.js",
-    "floating_chat/labextension/package.json",
+    "jupyter_floating_chat/labextension/static/style.js",
+    "jupyter_floating_chat/labextension/package.json",
 ]
-skip-if-exists = ["floating_chat/labextension/static/style.js"]
+skip-if-exists = ["jupyter_floating_chat/labextension/static/style.js"]
 
 [tool.hatch.build.hooks.jupyter-builder.build-kwargs]
 build_cmd = "build:prod"
@@ -60,7 +60,7 @@ npm = ["jlpm"]
 build_cmd = "install:extension"
 npm = ["jlpm"]
 source_dir = "src"
-build_dir = "floating_chat/labextension"
+build_dir = "jupyter_floating_chat/labextension"
 
 [tool.jupyter-releaser.options]
 version_cmd = "hatch version"

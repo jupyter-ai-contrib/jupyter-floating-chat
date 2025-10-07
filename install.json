@@ -1,5 +1,5 @@
 {
   "packageManager": "python",
-  "packageName": "floating_chat",
-  "uninstallInstructions": "Use your Python package manager (pip, conda, etc.) to uninstall the package floating_chat"
+  "packageName": "jupyter_floating_chat",
+  "uninstallInstructions": "Use your Python package manager (pip, conda, etc.) to uninstall the package jupyter_floating_chat"
 }

@@ -50,13 +50,13 @@ jobs:
 
         pip install build
         python -m build
-        pip uninstall -y "floating_chat" jupyterlab
+        pip uninstall -y "jupyter_floating_chat" jupyterlab
 
     - name: Upload extension packages
       uses: actions/upload-artifact@v4
       with:
         name: extension-artifacts
-        path: dist/floating_chat*
+        path: dist/jupyter_floating_chat*
         if-no-files-found: error
 
   test_isolated:
@@ -79,7 +79,7 @@ jobs:
         sudo rm -rf $(which node)
         sudo rm -rf $(which node)
 
-        pip install "jupyterlab>=4.0.0,<5" floating_chat*.whl
+        pip install "jupyterlab>=4.0.0,<5" jupyter_floating_chat*.whl
 
 
         jupyter labextension list
@@ -109,7 +109,7 @@ jobs:
     - name: Install the extension
       run: |
         set -eux
-        python -m pip install "jupyterlab>=4.0.0,<5" floating_chat*.whl
+        python -m pip install "jupyterlab>=4.0.0,<5" jupyter_floating_chat*.whl
 
     - name: Install dependencies
       working-directory: ui-tests
@@ -141,7 +141,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: floating_chat-playwright-tests
+        name: jupyter_floating_chat-playwright-tests
         path: |
           ui-tests/test-results
           ui-tests/playwright-report
