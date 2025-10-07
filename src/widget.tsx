@@ -4,7 +4,7 @@ import {
   INotebookAttachment,
   InputToolbarRegistry
 } from '@jupyter/chat';
-import { ReactWidget } from '@jupyterlab/apputils';
+import { IThemeManager, ReactWidget } from '@jupyterlab/apputils';
 import { Cell } from '@jupyterlab/cells';
 import { INotebookTracker } from '@jupyterlab/notebook';
 import { Message } from '@lumino/messaging';
@@ -21,6 +21,7 @@ export namespace FloatingInputWidget {
     position?: { x: number; y: number };
     target: HTMLElement | null;
     targetType?: string;
+    themeManager?: IThemeManager;
   }
 }
 
@@ -32,6 +33,7 @@ export class FloatingInputWidget extends ReactWidget {
       options.toolbarRegistry ?? InputToolbarRegistry.defaultToolbarRegistry();
     this._toolbarRegistry.hide('attach');
     this._position = options.position;
+    this._themeManager = options.themeManager;
 
     // Keep the original send function to restore it on dispose.
     this._originalSend = this._chatModel.input.send;
@@ -75,6 +77,7 @@ export class FloatingInputWidget extends ReactWidget {
     }
 
     this.addClass('floating-input-widget');
+    this.addClass('jp-ThemedContainer');
     this.id = 'floating-input-widget';
   }
 
@@ -85,6 +88,7 @@ export class FloatingInputWidget extends ReactWidget {
         toolbarRegistry={this._toolbarRegistry}
         onClose={() => this.dispose()}
         updatePosition={this.updatePosition}
+        themeManager={this._themeManager}
       />
     );
   }
@@ -115,7 +119,7 @@ export class FloatingInputWidget extends ReactWidget {
       this.node.style.right = '20px';
       this.node.style.bottom = '20px';
     }
-  }
+  };
 
   protected onAfterAttach(msg: Message): void {
     super.onAfterAttach(msg);
@@ -153,4 +157,5 @@ export class FloatingInputWidget extends ReactWidget {
   private _toolbarRegistry: IInputToolbarRegistry;
   private _position?: { x: number; y: number };
   private _originalSend: (content: string) => void;
+  private _themeManager?: IThemeManager;
 }
