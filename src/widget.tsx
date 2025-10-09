@@ -169,7 +169,32 @@ export class FloatingInputWidget extends ReactWidget {
   }
 
   private _onDocumentClick(event: Event): void {
-    if (!this.node.contains(event.target as Node)) {
+    if (this.isDisposed) {
+      return;
+    }
+
+    const target = event.target as HTMLElement;
+
+    // Check if the target is still in the DOM.
+    if (!document.contains(target)) {
+      return;
+    }
+
+    // Check if it's a MUI Portal element (Popper, Menu, etc.), which can be attached
+    // to the body and not to the widget (for example the title of a button).
+    const isMuiPortal =
+      target.closest('[data-mui-portal]') !== null ||
+      target.closest('.MuiPopper-root') !== null ||
+      target.closest('.MuiPopover-root') !== null ||
+      target.closest('.MuiTooltip-popper') !== null ||
+      target.closest('.MuiDialog-root') !== null ||
+      target.closest('[role="presentation"]') !== null;
+
+    if (isMuiPortal) {
+      return;
+    }
+
+    if (!this.node.contains(target)) {
       this.dispose();
     }
   }
