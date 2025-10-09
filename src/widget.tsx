@@ -32,7 +32,7 @@ export class FloatingInputWidget extends ReactWidget {
     this._toolbarRegistry =
       options.toolbarRegistry ?? InputToolbarRegistry.defaultToolbarRegistry();
     this._toolbarRegistry.hide('attach');
-    this._position = options.position;
+    this._position = options.position ? { ...options.position } : undefined;
     this._themeManager = options.themeManager;
 
     // Keep the original send function to restore it on dispose.
@@ -88,6 +88,7 @@ export class FloatingInputWidget extends ReactWidget {
         toolbarRegistry={this._toolbarRegistry}
         onClose={() => this.dispose()}
         updatePosition={this.updatePosition}
+        onDrag={this.handleDrag}
         themeManager={this._themeManager}
       />
     );
@@ -100,6 +101,42 @@ export class FloatingInputWidget extends ReactWidget {
   detach(): void {
     Widget.detach(this);
   }
+
+  handleDrag = (
+    deltaX: number,
+    deltaY: number,
+    isStart = false,
+    isEnd = false
+  ) => {
+    // Clean the start position on drop.
+    if (isEnd) {
+      this._dragStartPosition = undefined;
+      return;
+    }
+
+    // Get the widget position on drag start.
+    if (isStart || !this._dragStartPosition) {
+      const rect = this.node.getBoundingClientRect();
+      this._dragStartPosition = { x: rect.left, y: rect.top };
+      return; // Do not apply move at init.
+    }
+
+    const newX = this._dragStartPosition.x + deltaX;
+    const newY = this._dragStartPosition.y + deltaY;
+
+    // Constrain the widget position to the window.
+    const rect = this.node.getBoundingClientRect();
+    const maxX = window.innerWidth - rect.width;
+    const maxY = window.innerHeight - rect.height;
+
+    const constrainedX = Math.max(0, Math.min(newX, maxX));
+    const constrainedY = Math.max(0, Math.min(newY, maxY));
+
+    this._position = { x: constrainedX, y: constrainedY };
+
+    this.node.style.left = `${constrainedX}px`;
+    this.node.style.top = `${constrainedY}px`;
+  };
 
   updatePosition = () => {
     if (this._position) {
@@ -141,7 +178,7 @@ export class FloatingInputWidget extends ReactWidget {
     if (this.isDisposed) {
       return;
     }
-    // remove the event listener.
+    // Remove the event listener.
     document.removeEventListener('click', this._onDocumentClick.bind(this));
 
     // Clean the chat input.
@@ -158,4 +195,5 @@ export class FloatingInputWidget extends ReactWidget {
   private _position?: { x: number; y: number };
   private _originalSend: (content: string) => void;
   private _themeManager?: IThemeManager;
+  private _dragStartPosition?: { x: number; y: number };
 }

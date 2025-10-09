@@ -60,3 +60,29 @@
 .floating-input-body .jp-chat-input {
   flex-grow: 1;
 }
+
+.floating-input-container.dragging {
+  user-select: none;
+  cursor: grabbing !important;
+}
+
+.floating-input-header {
+  user-select: none;
+}
+
+.floating-input-container:not(.dragging) .floating-input-header {
+  cursor: grab;
+}
+
+.floating-input-container.dragging .floating-input-header {
+  cursor: grabbing;
+}
+
+/* prevent selecting text during drag */
+.floating-input-container.dragging * {
+  pointer-events: none;
+}
+
+.floating-input-container.dragging .floating-input-close {
+  pointer-events: auto;
+}
