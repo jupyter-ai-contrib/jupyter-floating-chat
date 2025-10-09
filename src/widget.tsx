@@ -4,7 +4,7 @@ import {
   INotebookAttachment,
   InputToolbarRegistry
 } from '@jupyter/chat';
-import { ReactWidget } from '@jupyterlab/apputils';
+import { IThemeManager, ReactWidget } from '@jupyterlab/apputils';
 import { Cell } from '@jupyterlab/cells';
 import { INotebookTracker } from '@jupyterlab/notebook';
 import { Message } from '@lumino/messaging';
@@ -21,6 +21,7 @@ export namespace FloatingInputWidget {
     position?: { x: number; y: number };
     target: HTMLElement | null;
     targetType?: string;
+    themeManager?: IThemeManager;
   }
 }
 
@@ -31,7 +32,8 @@ export class FloatingInputWidget extends ReactWidget {
     this._toolbarRegistry =
       options.toolbarRegistry ?? InputToolbarRegistry.defaultToolbarRegistry();
     this._toolbarRegistry.hide('attach');
-    this._position = options.position;
+    this._position = options.position ? { ...options.position } : undefined;
+    this._themeManager = options.themeManager;
 
     // Keep the original send function to restore it on dispose.
     this._originalSend = this._chatModel.input.send;
@@ -75,6 +77,7 @@ export class FloatingInputWidget extends ReactWidget {
     }
 
     this.addClass('floating-input-widget');
+    this.addClass('jp-ThemedContainer');
     this.id = 'floating-input-widget';
   }
 
@@ -84,6 +87,9 @@ export class FloatingInputWidget extends ReactWidget {
         model={this._chatModel.input}
         toolbarRegistry={this._toolbarRegistry}
         onClose={() => this.dispose()}
+        updatePosition={this.updatePosition}
+        onDrag={this.handleDrag}
+        themeManager={this._themeManager}
       />
     );
   }
@@ -96,12 +102,43 @@ export class FloatingInputWidget extends ReactWidget {
     Widget.detach(this);
   }
 
-  protected onAfterAttach(msg: Message): void {
-    super.onAfterAttach(msg);
+  handleDrag = (
+    deltaX: number,
+    deltaY: number,
+    isStart = false,
+    isEnd = false
+  ) => {
+    // Clean the start position on drop.
+    if (isEnd) {
+      this._dragStartPosition = undefined;
+      return;
+    }
 
-    this.node.style.position = 'fixed';
-    this.node.style.zIndex = '1000';
+    // Get the widget position on drag start.
+    if (isStart || !this._dragStartPosition) {
+      const rect = this.node.getBoundingClientRect();
+      this._dragStartPosition = { x: rect.left, y: rect.top };
+      return; // Do not apply move at init.
+    }
 
+    const newX = this._dragStartPosition.x + deltaX;
+    const newY = this._dragStartPosition.y + deltaY;
+
+    // Constrain the widget position to the window.
+    const rect = this.node.getBoundingClientRect();
+    const maxX = window.innerWidth - rect.width;
+    const maxY = window.innerHeight - rect.height;
+
+    const constrainedX = Math.max(0, Math.min(newX, maxX));
+    const constrainedY = Math.max(0, Math.min(newY, maxY));
+
+    this._position = { x: constrainedX, y: constrainedY };
+
+    this.node.style.left = `${constrainedX}px`;
+    this.node.style.top = `${constrainedY}px`;
+  };
+
+  updatePosition = () => {
     if (this._position) {
       let { x, y } = this._position;
 
@@ -119,11 +156,45 @@ export class FloatingInputWidget extends ReactWidget {
       this.node.style.right = '20px';
       this.node.style.bottom = '20px';
     }
+  };
+
+  protected onAfterAttach(msg: Message): void {
+    super.onAfterAttach(msg);
+
+    this.node.style.position = 'fixed';
+    this.node.style.zIndex = '1000';
+
+    this.updatePosition();
     document.addEventListener('click', this._onDocumentClick.bind(this));
   }
 
   private _onDocumentClick(event: Event): void {
-    if (!this.node.contains(event.target as Node)) {
+    if (this.isDisposed) {
+      return;
+    }
+
+    const target = event.target as HTMLElement;
+
+    // Check if the target is still in the DOM.
+    if (!document.contains(target)) {
+      return;
+    }
+
+    // Check if it's a MUI Portal element (Popper, Menu, etc.), which can be attached
+    // to the body and not to the widget (for example the title of a button).
+    const isMuiPortal =
+      target.closest('[data-mui-portal]') !== null ||
+      target.closest('.MuiPopper-root') !== null ||
+      target.closest('.MuiPopover-root') !== null ||
+      target.closest('.MuiTooltip-popper') !== null ||
+      target.closest('.MuiDialog-root') !== null ||
+      target.closest('[role="presentation"]') !== null;
+
+    if (isMuiPortal) {
+      return;
+    }
+
+    if (!this.node.contains(target)) {
       this.dispose();
     }
   }
@@ -132,7 +203,7 @@ export class FloatingInputWidget extends ReactWidget {
     if (this.isDisposed) {
       return;
     }
-    // remove the event listener.
+    // Remove the event listener.
     document.removeEventListener('click', this._onDocumentClick.bind(this));
 
     // Clean the chat input.
@@ -148,4 +219,6 @@ export class FloatingInputWidget extends ReactWidget {
   private _toolbarRegistry: IInputToolbarRegistry;
   private _position?: { x: number; y: number };
   private _originalSend: (content: string) => void;
+  private _themeManager?: IThemeManager;
+  private _dragStartPosition?: { x: number; y: number };
 }

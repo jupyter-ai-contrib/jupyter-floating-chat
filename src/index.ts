@@ -2,6 +2,7 @@ import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
+import { IThemeManager } from '@jupyterlab/apputils';
 import { INotebookTracker } from '@jupyterlab/notebook';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 
@@ -15,12 +16,13 @@ const plugin: JupyterFrontEndPlugin<IFloatingInputOptions> = {
   id: 'jupyter-floating-chat:plugin',
   description: 'A JupyterLab extension to add a floating chat.',
   autoStart: true,
-  optional: [ISettingRegistry, INotebookTracker],
+  optional: [ISettingRegistry, INotebookTracker, IThemeManager],
   provides: IFloatingInputOptions,
   activate: (
     app: JupyterFrontEnd,
     settingRegistry: ISettingRegistry | null,
-    notebookTracker: INotebookTracker
+    notebookTracker: INotebookTracker,
+    themeManager: IThemeManager
   ): IFloatingInputOptions => {
     console.log('JupyterLab extension jupyter-floating-chat is activated!');
 

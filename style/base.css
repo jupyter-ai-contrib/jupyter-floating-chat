@@ -30,6 +30,7 @@
   background: var(--jp-toolbar-background);
   border-bottom: 1px solid var(--jp-border-color1);
   border-radius: 8px 8px 0 0;
+  user-select: none;
 }
 
 .floating-input-title {
@@ -59,4 +60,26 @@
 
 .floating-input-body .jp-chat-input {
   flex-grow: 1;
+}
+
+.floating-input-container.dragging {
+  user-select: none;
+  cursor: grabbing !important;
+}
+
+.floating-input-container:not(.dragging) .floating-input-header {
+  cursor: grab;
+}
+
+.floating-input-container.dragging .floating-input-header {
+  cursor: grabbing;
+}
+
+/* prevent selecting text during drag */
+.floating-input-container.dragging * {
+  pointer-events: none;
+}
+
+.floating-input-container.dragging .floating-input-close {
+  pointer-events: auto;
 }
