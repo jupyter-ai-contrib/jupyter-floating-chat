@@ -30,6 +30,7 @@
   background: var(--jp-toolbar-background);
   border-bottom: 1px solid var(--jp-border-color1);
   border-radius: 8px 8px 0 0;
+  user-select: none;
 }
 
 .floating-input-title {
@@ -64,10 +65,6 @@
 .floating-input-container.dragging {
   user-select: none;
   cursor: grabbing !important;
-}
-
-.floating-input-header {
-  user-select: none;
 }
 
 .floating-input-container:not(.dragging) .floating-input-header {
