@@ -1,8 +1,20 @@
 # jupyter_floating_chat
 
+![Extension status](https://img.shields.io/badge/status-draft-critical)
 [![Github Actions Status](https://github.com/jupyter-ai-contrib/jupyter-floating-chat/workflows/Build/badge.svg)](https://github.com/jupyter-ai-contrib/jupyter-floating-chat/actions/workflows/build.yml)
 
 A JupyterLab extension to add a floating chat.
+
+> [!WARNING]
+> **⚠️ Experimental Extension**
+>
+> This extension is currently in experimental/development phase and is **NOT ready for production use**.
+>
+> - Features may be unstable or incomplete
+> - Breaking changes may occur without notice
+> - Use at your own risk in development environments only
+>
+> Please report issues and provide feedback to help improve the extension.
 
 ## Requirements
 
