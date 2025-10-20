@@ -6,7 +6,7 @@
 A JupyterLab extension to add a floating chat.
 
 > [!WARNING]
-> **⚠️ Experimental Extension**
+> **Experimental Extension**
 >
 > This extension is currently in experimental/development phase and is **NOT ready for production use**.
 >
