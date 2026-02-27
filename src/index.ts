@@ -1,32 +1,49 @@
+import { Chat, ChatWidget, IChatCommandRegistry, IChatTracker } from '@jupyter/chat';
 import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
-import { IThemeManager } from '@jupyterlab/apputils';
+import { IWidgetTracker } from '@jupyterlab/apputils';
 import { INotebookTracker } from '@jupyterlab/notebook';
+import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 
 import { FloatingInputWidget } from './widget';
-import { CommandIds, IFloatingInputOptions } from './tokens';
+
+export namespace CommandIds {
+  /**
+   * The command to open a floating input.
+   */
+  export const openInput = 'jupyter-floating-chat:open-input';
+}
 
 /**
  * Initialization data for the jupyter-floating-chat extension.
  */
-const plugin: JupyterFrontEndPlugin<IFloatingInputOptions> = {
+const plugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyter-floating-chat:plugin',
   description: 'A JupyterLab extension to add a floating chat.',
   autoStart: true,
-  optional: [ISettingRegistry, INotebookTracker, IThemeManager],
-  provides: IFloatingInputOptions,
+  optional: [
+    IChatTracker,
+    IRenderMimeRegistry,
+    ISettingRegistry,
+    INotebookTracker,
+    IChatCommandRegistry
+  ],
   activate: (
     app: JupyterFrontEnd,
+    chatTracker: IWidgetTracker<ChatWidget> | null,
+    rmRegistry: IRenderMimeRegistry | null,
     settingRegistry: ISettingRegistry | null,
     notebookTracker: INotebookTracker,
-    themeManager: IThemeManager
-  ): IFloatingInputOptions => {
+    chatCommandRegistry: IChatCommandRegistry
+  ): void => {
     console.log('JupyterLab extension jupyter-floating-chat is activated!');
 
-    const options: IFloatingInputOptions = {};
+    if (!chatTracker || !rmRegistry) {
+      return;
+    }
 
     let floatingWidget: FloatingInputWidget | null = null;
     let lastContextMenuPosition = { x: 0, y: 0 };
@@ -43,18 +60,26 @@ const plugin: JupyterFrontEndPlugin<IFloatingInputOptions> = {
       label: args => {
         return `Chat (${args.targetType})`;
       },
-      isVisible: () => !!options.chatModel,
+      isVisible: () => !!chatTracker.currentWidget,
       execute: args => {
         if (floatingWidget && !floatingWidget.isDisposed) {
           floatingWidget.dispose();
           floatingWidget = null;
         } else {
-          if (options.chatModel === undefined) {
+          if (!chatTracker.currentWidget) {
             return;
           }
+          const widget = chatTracker.currentWidget;
+
+          const chatContext: Chat.IChatProps = {
+            model: widget.model,
+            rmRegistry: rmRegistry,
+            chatCommandRegistry,
+            inputToolbarRegistry: widget.inputToolbarRegistry,
+            area: 'sidebar'
+          };
           floatingWidget = new FloatingInputWidget({
-            ...options,
-            chatModel: options.chatModel,
+            chatContext,
             notebookTracker,
             position: lastContextMenuPosition,
             target: lastContextMenuTarget,
@@ -100,10 +125,7 @@ const plugin: JupyterFrontEndPlugin<IFloatingInputOptions> = {
           );
         });
     }
-
-    return options;
   }
 };
 
 export default plugin;
-export { IFloatingInputOptions as IFloatingChatOptions } from './tokens';

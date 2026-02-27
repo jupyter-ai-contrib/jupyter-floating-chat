@@ -21,7 +21,6 @@ interface IFloatingInputProps extends ChatInput.IProps {
 
 export const FloatingInput: React.FC<IFloatingInputProps> = ({
   model,
-  toolbarRegistry,
   onClose,
   onCancel,
   updatePosition,
@@ -31,7 +30,7 @@ export const FloatingInput: React.FC<IFloatingInputProps> = ({
   const inputRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = React.useState(false);
-
+  
   React.useEffect(() => {
     // Focus on the input when rendered.
     inputRef.current?.getElementsByTagName('textarea').item(0)?.focus();
@@ -120,11 +119,7 @@ export const FloatingInput: React.FC<IFloatingInputProps> = ({
           </Button>
         </div>
         <div ref={inputRef} className="floating-input-body">
-          <ChatInput
-            model={model}
-            toolbarRegistry={toolbarRegistry}
-            onCancel={onCancel}
-          />
+          <ChatInput model={model} onCancel={onCancel} />
         </div>
       </div>
     </JlThemeProvider>

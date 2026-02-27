@@ -1,8 +1,8 @@
 import {
+  Chat,
+  ChatReactContext,
   IChatModel,
-  IInputToolbarRegistry,
   INotebookAttachment,
-  InputToolbarRegistry
 } from '@jupyter/chat';
 import { IThemeManager, ReactWidget } from '@jupyterlab/apputils';
 import { Cell } from '@jupyterlab/cells';
@@ -12,11 +12,12 @@ import { Widget } from '@lumino/widgets';
 import React from 'react';
 
 import { FloatingInput } from './components/floating-input';
-import { IFloatingInputOptions } from './tokens';
+
+// const ChatReactContext = createContext<Chat.IChatProps | undefined>(undefined);
 
 export namespace FloatingInputWidget {
-  export interface IOptions extends IFloatingInputOptions {
-    chatModel: IChatModel;
+  export interface IOptions {
+    chatContext: Chat.IChatProps;
     notebookTracker: INotebookTracker;
     position?: { x: number; y: number };
     target: HTMLElement | null;
@@ -28,10 +29,10 @@ export namespace FloatingInputWidget {
 export class FloatingInputWidget extends ReactWidget {
   constructor(options: FloatingInputWidget.IOptions) {
     super();
-    this._chatModel = options.chatModel;
-    this._toolbarRegistry =
-      options.toolbarRegistry ?? InputToolbarRegistry.defaultToolbarRegistry();
-    this._toolbarRegistry.hide('attach');
+    this._chatContext = options.chatContext;
+    this._chatModel = this._chatContext.model;
+    this._chatContext.inputToolbarRegistry?.hide('attach');
+
     this._position = options.position ? { ...options.position } : undefined;
     this._themeManager = options.themeManager;
 
@@ -83,14 +84,15 @@ export class FloatingInputWidget extends ReactWidget {
 
   protected render(): JSX.Element {
     return (
-      <FloatingInput
-        model={this._chatModel.input}
-        toolbarRegistry={this._toolbarRegistry}
-        onClose={() => this.dispose()}
-        updatePosition={this.updatePosition}
-        onDrag={this.handleDrag}
-        themeManager={this._themeManager}
-      />
+      <ChatReactContext.Provider value={this._chatContext}>
+        <FloatingInput
+          model={this._chatModel.input}
+          onClose={() => this.dispose()}
+          updatePosition={this.updatePosition}
+          onDrag={this.handleDrag}
+          themeManager={this._themeManager}
+        />
+      </ChatReactContext.Provider>
     );
   }
 
@@ -215,8 +217,8 @@ export class FloatingInputWidget extends ReactWidget {
     super.dispose();
   }
 
+  private _chatContext: Chat.IChatProps;
   private _chatModel: IChatModel;
-  private _toolbarRegistry: IInputToolbarRegistry;
   private _position?: { x: number; y: number };
   private _originalSend: (content: string) => void;
   private _themeManager?: IThemeManager;
