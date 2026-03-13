@@ -2,7 +2,7 @@ import {
   Chat,
   ChatReactContext,
   IChatModel,
-  INotebookAttachment,
+  INotebookAttachment
 } from '@jupyter/chat';
 import { IThemeManager, ReactWidget } from '@jupyterlab/apputils';
 import { Cell } from '@jupyterlab/cells';

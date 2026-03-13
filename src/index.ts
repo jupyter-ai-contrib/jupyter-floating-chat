@@ -1,9 +1,14 @@
-import { Chat, ChatWidget, IChatCommandRegistry, IChatTracker } from '@jupyter/chat';
+import {
+  Chat,
+  ChatWidget,
+  IChatCommandRegistry,
+  IChatTracker,
+  IInputToolbarRegistry
+} from '@jupyter/chat';
 import {
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
-import { IWidgetTracker } from '@jupyterlab/apputils';
 import { INotebookTracker } from '@jupyterlab/notebook';
 import { IRenderMimeRegistry } from '@jupyterlab/rendermime';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
@@ -33,7 +38,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
   ],
   activate: (
     app: JupyterFrontEnd,
-    chatTracker: IWidgetTracker<ChatWidget> | null,
+    chatTracker: IChatTracker | null,
     rmRegistry: IRenderMimeRegistry | null,
     settingRegistry: ISettingRegistry | null,
     notebookTracker: INotebookTracker,
@@ -71,11 +76,18 @@ const plugin: JupyterFrontEndPlugin<void> = {
           }
           const widget = chatTracker.currentWidget;
 
+          let inputToolbarRegistry: IInputToolbarRegistry | undefined;
+          if (widget instanceof ChatWidget) {
+            inputToolbarRegistry = widget.inputToolbarRegistry;
+          } else {
+            inputToolbarRegistry = widget.content.inputToolbarRegistry;
+          }
+
           const chatContext: Chat.IChatProps = {
             model: widget.model,
             rmRegistry: rmRegistry,
             chatCommandRegistry,
-            inputToolbarRegistry: widget.inputToolbarRegistry,
+            inputToolbarRegistry,
             area: 'sidebar'
           };
           floatingWidget = new FloatingInputWidget({

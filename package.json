@@ -57,12 +57,13 @@
         "watch:labextension": "jupyter labextension watch ."
     },
     "dependencies": {
-        "@jupyter/chat": "^0.18.1",
+        "@jupyter/chat": "^0.20.0",
         "@jupyter/react-components": "^0.16.0",
         "@jupyterlab/application": "^4.0.0",
         "@jupyterlab/apputils": "^4.0.0",
         "@jupyterlab/cells": "^4.0.0",
         "@jupyterlab/notebook": "^4.0.0",
+        "@jupyterlab/rendermime": "^4.0.0",
         "@jupyterlab/settingregistry": "^4.0.0",
         "@jupyterlab/ui-components": "^4.0.0",
         "@lumino/coreutils": "^2.2.1",

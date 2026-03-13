@@ -30,7 +30,7 @@ export const FloatingInput: React.FC<IFloatingInputProps> = ({
   const inputRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = React.useState(false);
-  
+
   React.useEffect(() => {
     // Focus on the input when rendered.
     inputRef.current?.getElementsByTagName('textarea').item(0)?.focus();
